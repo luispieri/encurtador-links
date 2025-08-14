@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pieri Tech Web Solutions - Encurtador de Links</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+    <link rel="icon" type="image/png" href="assets/images/favicon/favicon.ico">
+    <header class="site-header">
+        <div class="header-content">
+            <img src="assets/images/logo.png" alt="Logo Pieri Tech Web Solutions" class="site-logo">
+            <div>
+                <h1 class="site-title">Pieri Tech Web Solutions</h1>
+                <span class="site-subtitle">Encurtador de Links Pro</span>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="title-section">
+            <h1>🔗 Encurtador de Links Pro</h1>
+            <p>Transforme seus links longos em URLs curtas e personalizadas</p>
+        </div>
+
+        <main>
+            <div class="form-container">
+                <form id="shortenForm">
+                    <div class="input-group">
+                        <input 
+                            type="url" 
+                            id="urlInput" 
+                            placeholder="Cole sua URL aqui (ex: https://exemplo.com)"
+                            required
+                        >
+                        <button type="submit" id="shortenBtn">Encurtar</button>
+                    </div>
+
+                    <!-- Opções de Expiração -->
+                    <div class="expiration-options">
+                        <label for="expiresIn">Tempo de expiração:</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="expiresIn" value="1" id="exp1h">
+                                <span class="radio-label">1 hora</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="expiresIn" value="24" id="exp1d" checked>
+                                <span class="radio-label">24 horas</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="expiresIn" value="168" id="exp7d">
+                                <span class="radio-label">7 dias</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Opções Avançadas -->
+                    <div class="advanced-options">
+                        <button type="button" id="toggleAdvanced" class="toggle-btn">
+                            ⚙️ Opções Avançadas
+                        </button>
+                        
+                        <div id="advancedPanel" class="advanced-panel hidden">
+                            <div class="option-group">
+                                <label for="customCode">Nome personalizado para a URL (opcional):</label>
+                                <input 
+                                    type="text" 
+                                    id="customCode" 
+                                    placeholder="ex: meulink (aparecerá como: dominio.com.br/meulink)"
+                                    pattern="[a-zA-Z0-9_-]{3,20}"
+                                    title="3-20 caracteres: letras, números, _ ou -"
+                                >
+                                <small>Deixe vazio para gerar automaticamente</small>
+                            </div>
+
+                            <div class="option-group">
+                                <label for="title">Título (opcional):</label>
+                                <input 
+                                    type="text" 
+                                    id="title" 
+                                    placeholder="Título para identificar o link"
+                                    maxlength="255"
+                                >
+                            </div>
+
+                            <div class="option-group">
+                                <label for="description">Descrição (opcional):</label>
+                                <textarea 
+                                    id="description" 
+                                    placeholder="Descrição do link"
+                                    rows="2"
+                                    maxlength="500"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <span>Encurtando...</span>
+                </div>
+
+                <div id="result" class="result hidden">
+                    <div class="success-message">
+                        <h3>✅ Link encurtado com sucesso!</h3>
+                        <div class="url-container">
+                            <div class="url-display">
+                                <strong>URL original:</strong>
+                                <span id="originalUrl"></span>
+                            </div>
+                            <div class="url-display">
+                                <strong>URL encurtada:</strong>
+                                <div class="short-url-container">
+                                    <span id="shortUrl"></span>
+                                    <button id="copyBtn" class="copy-btn" title="Copiar">📋</button>
+                                </div>
+                            </div>
+                            <div id="resultDetails" class="result-details"></div>
+                            <div id="qrCodeContainer" class="qr-container">
+                                <h4>📱 QR Code:</h4>
+                                <img id="qrCode" alt="QR Code" />
+                                <button id="downloadQR" class="download-btn">⬇️ Baixar QR</button>
+                            </div>
+                        </div>
+                        <button id="newUrlBtn" class="new-url-btn">Encurtar nova URL</button>
+                    </div>
+                </div>
+
+                <div id="error" class="error hidden">
+                    <p id="errorMessage"></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>Luis Felipe de Pieri</h3>
+                <div class="contact-info">
+                    <div class="contact-item clickable" onclick="copyEmail(event)" title="Clique para copiar">
+                        <span class="contact-icon">📧</span>
+                        <span>Email: luis@pieritech.com.br</span>
+                    </div>
+                    <div class="contact-item clickable" onclick="openLinkedIn()" title="Clique para abrir LinkedIn">
+                        <span class="contact-icon">💼</span>
+                        <span>LinkedIn: linkedin.com/in/luispieri</span>
+                    </div>
+                    <div class="contact-item clickable" onclick="openWhatsApp(event)" title="Clique para abrir WhatsApp">
+                        <span class="contact-icon">📱</span>
+                        <span>Telefone: (12) 99753-3555</span>
+                    </div>
+                    <div class="contact-item clickable" onclick="openGitHub()" title="Clique para abrir GitHub">
+                        <span class="contact-icon">💻</span>
+                        <span>GitHub: github.com/luispieri</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>Localização: São José dos Campos - SP</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-brand">
+                <p>Desenvolvido com ❤️ | Pieri Tech Web Solutions</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/utils/api.js"></script>
+    <script src="assets/js/components/urlForm.js"></script>
+    <script src="assets/js/components/qrCode.js"></script>
+    <script src="assets/js/components/management.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

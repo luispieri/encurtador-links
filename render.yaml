@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: encurtador-link
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromService:
+          type: web
+          name: encurtador-link
+          property: port
+
+databases:
+  - name: encurtador-db
+    databaseName: encurtador_links
+    user: encurtador_user

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Painel Administrativo - Encurtador de Links</title>
+    <link rel="stylesheet" href="assets/css/admin.css?v=2.0">
+    <link rel="icon" type="image/png" href="assets/images/favicon/favicon.ico">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <img src="assets/images/logo.png" alt="Logo" class="login-logo">
+                <h1>Painel Administrativo</h1>
+                <p>Encurtador de Links Pro</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Usuário:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn">Entrar</button>
+                <div id="loginError" class="error-message hidden"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel hidden">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <img src="assets/images/logo.png" alt="Logo" class="header-logo">
+                <h1>Painel Administrativo</h1>
+            </div>
+            <div class="header-right">
+                <span class="admin-user" id="adminUserName">👤 Carregando...</span>
+                <button id="logoutBtn" class="logout-btn">Sair</button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="admin-nav">
+            <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
+            <button class="nav-btn" data-section="urls">🔗 URLs</button>
+            <button class="nav-btn" data-section="create">➕ Criar URL</button>
+            <button class="nav-btn" data-section="settings">⚙️ Configurações</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section active">
+                <h2>Dashboard</h2>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🔗</div>
+                        <div class="stat-content">
+                            <h3 id="totalUrls">-</h3>
+                            <p>Total de URLs</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3 id="activeUrls">-</h3>
+                            <p>URLs Ativas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👆</div>
+                        <div class="stat-content">
+                            <h3 id="totalClicks">-</h3>
+                            <p>Total de Cliques</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-content">
+                            <h3 id="todayUrls">-</h3>
+                            <p>URLs Hoje</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="chart-container">
+                        <h3>URLs Mais Clicadas</h3>
+                        <div id="topUrlsList" class="top-urls-list">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Atividade da Semana</h3>
+                        <div id="weeklyChart" class="weekly-chart">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- URLs Section -->
+            <section id="urls" class="admin-section">
+                <div class="section-header">
+                    <h2>Gerenciar URLs</h2>
+                    <div class="section-actions">
+                        <button id="cleanExpiredBtn" class="action-btn secondary">🧹 Limpar Expiradas</button>
+                        <button id="refreshUrlsBtn" class="action-btn">🔄 Atualizar</button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label for="statusFilter">Status:</label>
+                        <select id="statusFilter">
+                            <option value="">Todos</option>
+                            <option value="active">Ativos</option>
+                            <option value="inactive">Inativos</option>
+                            <option value="expired">Expirados</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="searchFilter">Buscar:</label>
+                        <input type="text" id="searchFilter" placeholder="URL, código ou título...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="sortFilter">Ordenar:</label>
+                        <select id="sortFilter">
+                            <option value="created_at:DESC">Mais Recente</option>
+                            <option value="created_at:ASC">Mais Antigo</option>
+                            <option value="clicks:DESC">Mais Cliques</option>
+                            <option value="clicks:ASC">Menos Cliques</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- URLs Table -->
+                <div class="table-container">
+                    <table class="urls-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>URL Original</th>
+                                <th>Código</th>
+                                <th>Título</th>
+                                <th>Cliques</th>
+                                <th>Status</th>
+                                <th>Criado</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="urlsTableBody">
+                            <!-- Será preenchido dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button id="prevPageBtn" class="page-btn">« Anterior</button>
+                    <span id="pageInfo">Página 1 de 1</span>
+                    <button id="nextPageBtn" class="page-btn">Próxima »</button>
+                </div>
+            </section>
+
+            <!-- Create URL Section -->
+            <section id="create" class="admin-section">
+                <h2>Criar Nova URL</h2>
+                
+                <form id="createUrlForm" class="create-form">
+                    <div class="form-group">
+                        <label for="createUrl">URL Original *</label>
+                        <input type="url" id="createUrl" required placeholder="https://exemplo.com">
+                    </div>
+                    
+                    <!-- Tempo de expiração -->
+                    <div class="form-group">
+                        <label>Tempo de expiração:</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="expiresIn" value="1" id="createExp1h">
+                                <span class="radio-label">1 hora</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="expiresIn" value="24" id="createExp1d" checked>
+                                <span class="radio-label">24 horas</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="expiresIn" value="168" id="createExp7d">
+                                <span class="radio-label">7 dias</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Opções Avançadas -->
+                    <div class="advanced-options">
+                        <button type="button" id="toggleAdvancedCreate" class="toggle-btn">
+                            ⚙️ Opções Avançadas
+                        </button>
+                        
+                        <div id="advancedCreatePanel" class="advanced-panel hidden">
+                            <div class="form-group">
+                                <label for="createCode">Nome personalizado para a URL (opcional):</label>
+                                <input 
+                                    type="text" 
+                                    id="createCode" 
+                                    placeholder="ex: meulink (aparecerá como: dominio.com.br/meulink)"
+                                    pattern="[a-zA-Z0-9_-]{3,20}"
+                                    title="3-20 caracteres: letras, números, _ ou -"
+                                >
+                                <small>Deixe vazio para gerar automaticamente</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="createTitle">Título (opcional):</label>
+                                <input 
+                                    type="text" 
+                                    id="createTitle" 
+                                    placeholder="Título para identificar o link"
+                                    maxlength="255"
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="createDescription">Descrição (opcional):</label>
+                                <textarea 
+                                    id="createDescription" 
+                                    placeholder="Descrição do link"
+                                    rows="2"
+                                    maxlength="500"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Criar URL</button>
+                        <button type="reset" class="reset-btn">Limpar</button>
+                    </div>
+                </form>
+
+                <div id="createResult" class="create-result hidden">
+                    <!-- Resultado será mostrado aqui -->
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section">
+                <h2>Configurações</h2>
+                
+                <div class="settings-grid">
+                    <div class="setting-card">
+                        <h3>🧹 Limpeza Automática</h3>
+                        <p>Remover URLs expiradas automaticamente</p>
+                        <button id="cleanupBtn" class="action-btn">Executar Limpeza</button>
+                    </div>
+                    
+                    <div class="setting-card">
+                        <h3>📊 Exportar Dados</h3>
+                        <p>Baixar relatório de todas as URLs</p>
+                        <button id="exportBtn" class="action-btn">Exportar CSV</button>
+                    </div>
+                    
+                    <div class="setting-card">
+                        <h3>🔄 Backup</h3>
+                        <p>Fazer backup do banco de dados</p>
+                        <button id="backupBtn" class="action-btn">Criar Backup</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Edit URL Modal -->
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar URL</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="editUrlForm" class="modal-body">
+                <input type="hidden" id="editId">
+                
+                <div class="form-group">
+                    <label for="editUrl">URL Original</label>
+                    <input type="url" id="editUrl" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editCode">Código</label>
+                    <input type="text" id="editCode" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editTitle">Título</label>
+                    <input type="text" id="editTitle">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDescription">Descrição</label>
+                    <textarea id="editDescription" rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editExpires">Expira em (horas)</label>
+                        <input type="number" id="editExpires" min="0">
+                        <small>0 = sem expiração</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="editActive">Status</label>
+                        <select id="editActive">
+                            <option value="1">Ativo</option>
+                            <option value="0">Inativo</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn secondary" onclick="closeEditModal()">Cancelar</button>
+                <button type="submit" form="editUrlForm" class="modal-btn primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="assets/js/admin/adminAuth.js?v=2.0"></script>
+    <script src="assets/js/admin/adminAPI.js?v=2.0"></script>
+    <script src="assets/js/admin/adminDashboard.js?v=2.0"></script>
+    <script src="assets/js/admin/adminUrls.js?v=2.0"></script>
+    <script src="assets/js/admin/adminMain.js?v=2.0"></script>
+</body>
+</html>
