@@ -136,9 +136,11 @@ npm start
 ### 🔗 **Acesso Público**
 O projeto está disponível online para testes e demonstração:
 
-**🌐 URL da Aplicação:** [Em breve - será adicionado quando hospedado]
+**🌐 URL da Aplicação:** https://encurtador-links-34n9.onrender.com
 
-> **📝 Nota para o desenvolvedor:** Quando a aplicação estiver hospedada, substitua esta linha pela URL real da aplicação.
+**⚙️ Painel Administrativo:** https://encurtador-links-34n9.onrender.com/admin
+
+> **📝 Hospedado no Render** para demonstração e testes. A aplicação pode ter um pequeno delay na primeira inicialização (cold start).
 
 ### 🔑 **Acesso ao Painel Administrativo**
 Para testar as funcionalidades administrativas, use as credenciais abaixo:

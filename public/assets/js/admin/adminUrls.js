@@ -267,6 +267,11 @@ class AdminUrls {
             if (response.success) {
                 window.adminAuth.showToast('URL deletada com sucesso!', 'success');
                 this.loadUrls();
+                
+                // Atualizar dashboard sem cache
+                if (window.adminDashboard) {
+                    window.adminDashboard.refreshDashboard();
+                }
             }
         } catch (error) {
             window.adminAuth.showToast('Erro ao deletar URL: ' + error.message, 'error');
@@ -288,9 +293,9 @@ class AdminUrls {
                 );
                 this.loadUrls();
                 
-                // Atualizar dashboard se estiver visível
+                // Atualizar dashboard sem cache
                 if (window.adminDashboard) {
-                    window.adminDashboard.loadDashboard();
+                    window.adminDashboard.refreshDashboard();
                 }
             }
         } catch (error) {

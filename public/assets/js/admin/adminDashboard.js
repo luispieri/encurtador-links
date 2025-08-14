@@ -12,18 +12,20 @@ class AdminDashboard {
         this.cacheTimeout = 2 * 60 * 1000; // 2 minutos
     }
 
-    async loadDashboard() {
+    async loadDashboard(forceRefresh = false) {
         // Evitar múltiplas requisições simultâneas
         if (this.isLoading) return;
         
         try {
-            // Verificar cache primeiro
-            const cached = this.getFromCache('dashboard_stats');
-            if (cached) {
-                this.updateStats(cached.summary);
-                this.updateTopUrls(cached.top_urls);
-                this.updateWeeklyChart(cached.weekly_activity);
-                return;
+            // Verificar cache primeiro (pular se forceRefresh)
+            if (!forceRefresh) {
+                const cached = this.getFromCache('dashboard_stats');
+                if (cached) {
+                    this.updateStats(cached.summary);
+                    this.updateTopUrls(cached.top_urls);
+                    this.updateWeeklyChart(cached.weekly_activity);
+                    return;
+                }
             }
             
             this.isLoading = true;
@@ -145,6 +147,12 @@ class AdminDashboard {
         } else {
             overlay.classList.add('hidden');
         }
+    }
+
+    // Método para limpar cache e atualizar dashboard
+    refreshDashboard() {
+        this.cache.clear();
+        this.loadDashboard(true);
     }
 }
 
