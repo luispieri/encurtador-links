@@ -271,11 +271,25 @@ button:hover, input[type="submit"]:hover {
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .url-display {
     margin-bottom: 15px;
     text-align: left;
+    max-width: 100%;
+    overflow: visible;
+    word-wrap: break-word;
+    display: block;
+    width: 100%;
+}
+
+.url-display strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
 }
 
 .url-display:last-child {
@@ -303,6 +317,49 @@ button:hover, input[type="submit"]:hover {
     color: #667eea;
     font-weight: 600;
     word-break: break-all;
+}
+
+#originalUrl {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: inline-block !important;
+    padding: 8px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    color: #495057;
+    font-family: monospace;
+    font-size: 0.9rem;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    line-break: anywhere !important;
+    hyphens: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Garantir que o container da URL também quebre */
+.url-display span#originalUrl,
+.url-container #originalUrl,
+.result #originalUrl {
+    word-wrap: break-word !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-all !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    hyphens: auto !important;
+    display: inline-block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Força quebra de linha no elemento span específico */
+span#originalUrl {
+    display: inline-block !important;
+    max-width: calc(100% - 16px) !important;
+    vertical-align: top !important;
 }
 
 .error {
