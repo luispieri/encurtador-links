@@ -109,7 +109,14 @@ class AdminUrls {
                     </div>
                 </td>
                 <td>
-                    <code>/${url.short_code}</code>
+                    <div class="short-url-cell">
+                        <a href="${window.location.origin}/${url.short_code}" target="_blank" class="short-url-link">
+                            ${window.location.origin}/${url.short_code}
+                        </a>
+                        <button class="btn-copy-url" onclick="navigator.clipboard.writeText('${window.location.origin}/${url.short_code}')" title="Copiar URL">
+                            📋
+                        </button>
+                    </div>
                 </td>
                 <td>${url.title || '-'}</td>
                 <td>${url.clicks}</td>
