@@ -86,7 +86,7 @@ O projeto foi criado para praticar e demonstrar:
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/encurtador-link.git
+git clone https://github.com/luispieri/encurtador-link.git
 cd encurtador-link
 ```
 
